@@ -9,6 +9,23 @@ require("admin-lte");
 
 import Vue from "vue";
 
+import Swal from "sweetalert2";
+
+window.Swal = Swal;
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: toast => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+    }
+});
+window.Toast = Swal;
+
 import { Form, HasError, AlertError } from "vform";
 
 window.Form = Form;
@@ -27,6 +44,14 @@ const routes = [
     {
         path: "/catagory",
         component: require("./components/catagory.vue").default
+    },
+    {
+        path: "/ourproduct",
+        component: require("./components/product.vue").default
+    },
+    {
+        path: "/hiredproduct",
+        component: require("./components/hiredproduct.vue").default
     },
     { path: "/orders", component: require("./components/orders.vue").default }
 ];

@@ -6,7 +6,7 @@
           <div class="col-12 mt-5">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Catagory Table</h3>
+                <h3 class="card-title">Hired Product Table</h3>
 
                 <div class="card-tools">
                   <button class="btn btn-primary" @click="newModel()">Add New Catagory</button>
@@ -68,29 +68,29 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel" v-show="editmode">Editi details</h5>
-            <h5 class="modal-title" id="exampleModalLabel" v-show="!editmode">Create Catagory</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form @submit.prevent=" editmode ? updatecatagory() : createcatagory()">
+          <form @submit.prevent="sendData">
             <div class="modal-body">
               <div class="form-group">
                 <input
-                  v-model="form.catagory_name"
+                  v-model="form.name"
                   type="text"
-                  name="catagory_name"
+                  name="name"
                   placeholder="Enter Catagory Name"
                   class="form-control"
                   :class="{
-                                        'is-invalid': form.errors.has('catagory_name')
+                                        'is-invalid': form.errors.has('name')
                                     }"
                 />
-                <has-error :form="form" field="catagory_name"></has-error>
+                <has-error :form="form" field="name"></has-error>
               </div>
               <div class="form-group">
                 <input
+                  style="font-weight:bold"
                   v-model="form.description"
                   type="text"
                   name="description"
@@ -107,8 +107,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" v-show="!editmode" class="btn btn-primary">create</button>
-              <button type="submit" v-show="editmode" class="btn btn-success">update</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
           </form>
         </div>
@@ -122,11 +121,9 @@
 export default {
   data() {
     return {
-      editmode: false,
       catagories: {},
       form: new Form({
-        id: "",
-        catagory_name: "",
+        name: "",
         description: ""
       })
     };
@@ -139,18 +136,16 @@ export default {
     },
 
     newModel() {
-      this.editmode = false;
       this.form.reset();
       $("#exampleModal").modal("show");
     },
     EditModel(catagory) {
-      this.editmode = true;
       this.form.reset();
       $("#exampleModal").modal("show");
       this.form.fill(catagory);
     },
 
-    createcatagory() {
+    sendData() {
       this.form.post("api/catagory");
       Toast.fire({
         icon: "success",
@@ -158,22 +153,6 @@ export default {
       });
       $("#exampleModal").modal("hide");
       this.loadData();
-    },
-    updatecatagory() {
-      this.form
-        .put("api/catagory/" + this.form.id)
-        .then(() => {
-          //success
-          Toast.fire({
-            icon: "success",
-            title: " catagory updated in successfully"
-          });
-          $("#exampleModal").modal("hide");
-          this.loadData();
-        })
-        .catch(() => {
-          //alert("erorr");
-        });
     },
     deletecatagory(id) {
       Swal.fire({

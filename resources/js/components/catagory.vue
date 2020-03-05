@@ -16,7 +16,7 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover table-striped">
                   <thead>
-                    <tr>
+                    <tr class="bg-dark">
                       <th>ID</th>
                       <th>catagory name</th>
                       <th>description</th>

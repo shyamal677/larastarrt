@@ -17,6 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/catagory', 'API\CatagoryController');
+Route::apiResource('/catagory', 'API\CatagoryController'); //->middleware('role:normal admin');
 Route::apiResource('/ourproduct', 'API\ProductController');
 Route::apiResource('/hiredproduct', 'API\HiredProductController');
+
+Route::get('/showItems/{id}','API\ProductController@show_items');

@@ -37,27 +37,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <li class="nav-item ">
                 <a class="nav-link pr-3" href="/">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item pr-3">
-                <a class="nav-link" href="/product">All Product</a>
-              </li>
-              <li class="nav-item pr-3">
-                <a class="nav-link" href="/show_items/electro">Electric</a>
-              </li>
-              <li class="nav-item pr-3">
-                <a class="nav-link" href="/show_items/home_app">Home app</a>
-              </li>
-              <li class="nav-item pr-3">
-                <a class="nav-link" href="/show_items/computing">Computers</a>
-              </li>
-              <li class="nav-item pr-3">
-                <a class="nav-link" href="/show_items/fashion">Fashions</a>
-              </li>
-              <li class="nav-item pr-3">
-                <a class="nav-link" href="/show_items/others">othres</a>
-              </li>
-              <li class="nav-item pr-3">
-                  <a class="nav-link" href="/Hired-product">Hired items</a>
-                </li>
+              
+              @foreach ($allcatagory as $item)
+                  <li class="nav-item pr-3">
+                    <a class="nav-link" href="/{{$item->id}}">{{$item->catagory_name}}</a>
+                  </li>
+              @endforeach
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -99,6 +84,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
     </div>
 </nav>
+
+
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->

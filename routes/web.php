@@ -21,6 +21,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/{any}', function () {
-    return view('vendor\multiauth.admin.home'); 
-})->where('any', '.*');
+Route::resource('/product','ProductController');
+
+Route::get('/showItems/{id}','ProductController@show_items');
+
+Route::resource('/cart','CartController');
+//Route::post('/cart/set/{id}','CartController@update');
+Route::get('/cart/remove/{id}','CartController@remove');
+
+// Route::get('/{any}', function () {
+//     return view('vendor\multiauth.admin.home'); 
+// })->where('any', '.*');

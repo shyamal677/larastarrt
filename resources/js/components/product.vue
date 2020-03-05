@@ -16,28 +16,29 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover table-striped">
                   <thead>
-                    <tr>
+                    <tr class="bg-dark">
                       <th>Product name</th>
                       <th>description</th>
                       <th>catagory</th>
                       <th>price</th>
                       <th>quntity</th>
+                      <th>Modify</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="product in product" :key="product.id">
                       <th>{{ product.product_name }}</th>
-                      <th>{{ product.product_name }}</th>
-                      <th>{{ product.product_name }}</th>
-                      <th>{{ product.product_name }}</th>
-                      <th>{{ product.product_name }}</th>
+                      <th>{{ product.description }}</th>
+                      <th>{{ product.catagory }}</th>
+                      <th>{{ product.price }}</th>
+                      <th>{{ product.quntity }}</th>
 
                       <td>
                         <a href="#" @click="deletecatagory(catagory.id)">
                           <i class="fa fa-trash-alt red pr-2"></i>
                         </a>
                         /
-                        <a href="#" @click="EditModel(catagory)">
+                        <a href="#" @click="EditModel(product)">
                           <i class="fa fa-edit blue pl-2"></i>
                         </a>
                       </td>
@@ -87,17 +88,28 @@
                 <select
                   v-model="form.catagory"
                   type="text"
-                  name="product_name"
+                  name="catagory"
                   class="form-control"
-                  :class="{ 'is-invalid': form.errors.has('product_name') }"
+                  :class="{ 'is-invalid': form.errors.has('catagory') }"
                 >
                   <option value>select catagory</option>
-                  <option value="1">catagory 1</option>
-                  <option value="2">select catagory</option>
-                  <option value="3">select catagory</option>
-                  <option value="4">select catagory</option>
+                  <option
+                    v-for="item in catagory"
+                    :key="item.id"
+                    :value="item.id"
+                  >{{item.catagory_name}}</option>
                 </select>
-                <has-error :form="form" field="product_name"></has-error>
+                <has-error :form="form" field="catagory"></has-error>
+              </div>
+              <div class="form-group">
+                <label>Product Description</label>
+                <textarea
+                  v-model="form.description"
+                  name="description"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('description') }"
+                ></textarea>
+                <has-error :form="form" field="description"></has-error>
               </div>
               <div class="form-group">
                 <label>Product Price</label>
@@ -105,7 +117,7 @@
                   v-model="form.price"
                   type="number"
                   min="10"
-                  step="100"
+                  step="100.00"
                   name="price"
                   class="form-control"
                   :class="{ 'is-invalid': form.errors.has('price') }"
@@ -126,21 +138,23 @@
               <div class="form-group">
                 <label>image 1</label>
                 <input
-                  @change="onselect"
+                  @change="onselect1"
                   type="file"
                   name="image_1"
                   class="form-control"
+                  multiple
                   :class="{ 'is-invalid': form.errors.has('image_1') }"
                 />
                 <has-error :form="form" field="image_1"></has-error>
               </div>
-              <!-- <div class="form-group">
+              <div class="form-group">
                 <label>image 2</label>
                 <input
-                  @change="onselect"
+                  @change="onselect2"
                   type="file"
                   name="image_2"
                   class="form-control"
+                  multiple
                   :class="{ 'is-invalid': form.errors.has('image_2') }"
                 />
                 <has-error :form="form" field="image_2"></has-error>
@@ -148,7 +162,7 @@
               <div class="form-group">
                 <label>image 3</label>
                 <input
-                  @change="onselect"
+                  @change="onselect3"
                   type="file"
                   name="image_3"
                   class="form-control"
@@ -159,14 +173,14 @@
               <div class="form-group">
                 <label>image 4</label>
                 <input
-                  @change="onselect"
+                  @change="onselect4"
                   type="file"
                   name="image_4"
                   class="form-control"
                   :class="{ 'is-invalid': form.errors.has('image_4') }"
                 />
                 <has-error :form="form" field="image_4"></has-error>
-              </div>-->
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -185,31 +199,53 @@ export default {
   data() {
     return {
       product: {},
+      catagory: {},
       form: new Form({
         product_name: "",
         catagory: "",
+        description: "",
         price: "",
         quntity: "",
         image_1: "",
         image_2: "",
+
         image_3: "",
         image_4: ""
       })
     };
   },
   methods: {
-    onselect(e) {
+    onselect1(e) {
       let selectFile = e.target.files[0];
-
-      console.log(selectFile["name"]);
-
-      this.form.image_1 = selectFile["name"];
-
-      // let reader = new FileReader();
-      // reader.onloadend = selectFile => {
-      //   this.form.image_1 = reader.result;
-      // };
-      // reader.readAsDataURL(selectFile);
+      let reader = new FileReader();
+      reader.onloadend = selectFile => {
+        this.form.image_1 = reader.result;
+      };
+      reader.readAsDataURL(selectFile);
+    },
+    onselect2(e) {
+      let selectFile = e.target.files[0];
+      let reader = new FileReader();
+      reader.onloadend = selectFile => {
+        this.form.image_2 = reader.result;
+      };
+      reader.readAsDataURL(selectFile);
+    },
+    onselect3(e) {
+      let selectFile = e.target.files[0];
+      let reader = new FileReader();
+      reader.onloadend = selectFile => {
+        this.form.image_3 = reader.result;
+      };
+      reader.readAsDataURL(selectFile);
+    },
+    onselect4(e) {
+      let selectFile = e.target.files[4];
+      let reader = new FileReader();
+      reader.onloadend = selectFile => {
+        this.form.image_4 = reader.result;
+      };
+      reader.readAsDataURL(selectFile);
     },
     loadData() {
       axios
@@ -217,14 +253,18 @@ export default {
         .then(({ data }) => (this.product = data.data));
     },
 
+    GetCatagory() {
+      axios.get("api/catagory").then(({ data }) => (this.catagory = data));
+    },
+
     newModel() {
       this.form.reset();
       $("#exampleModal").modal("show");
     },
-    EditModel(catagory) {
+    EditModel(product) {
       this.form.reset();
       $("#exampleModal").modal("show");
-      this.form.fill(catagory);
+      this.form.fill(product);
     },
 
     sendData() {
@@ -236,6 +276,7 @@ export default {
           icon: "success",
           title: "New catagory created in successfully"
         });
+        this.form.reset();
         $("#exampleModal").modal("hide");
       });
 
@@ -262,6 +303,7 @@ export default {
   },
   created() {
     this.loadData();
+    this.GetCatagory();
   },
   mounted() {
     console.log("Component mounted.");

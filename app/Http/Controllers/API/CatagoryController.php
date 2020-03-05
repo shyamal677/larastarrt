@@ -16,7 +16,7 @@ class CatagoryController extends Controller
      */
     public function index()
     {
-        return Catagory::orderBy('created_at','asc')->paginate(10);
+        return Catagory::orderBy('created_at','asc')->get();
     }
 
     /**

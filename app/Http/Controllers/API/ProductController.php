@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManagerStatic as Image;
 use App\Product;
 
 class ProductController extends Controller
@@ -20,6 +20,11 @@ class ProductController extends Controller
        return Product::orderBy('created_at','asc')->paginate(10);
     }
 
+    public function show_items($id)
+    {
+        return Product::where('catagory', $id)->paginate(10);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -28,26 +33,55 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // $validate = request()->validate([
-        //     'product_name' =>'required',
-        //     'catagory' => 'required',
-        //     'price' => 'required',
-        //     'quntity' => 'required',
-        //     'image_5' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        //     'image_1' => 'image|nullable|max:1999',
-        //     'image_3' => 'image|nullable|max:1999',
-        //     'image_4' => 'image|nullable|max:1999'
-        // ]);
+        $validate = request()->validate([
+            'product_name' =>'required',
+            'catagory' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'quntity' => 'required',
+            
+        ]);
 
-        // return $validate;
+        
 
-        $imageName = time().'.'.request()->image_1->getClientOriginalExtension();
+        
+           
+            if($request->image_1){
+                $name1 = time().'.'. explode('/', explode(':',substr($request->image_1,0,strpos($request->image_1,';')))[1])[1];
+                Image::make($request->image_1)->save(public_path('images/').$name1);
+                $msg =  '1 image doen and';
+            }
+            if($request->image_2){
+                $name2 = time().'.'. explode('/', explode(':',substr($request->image_2,0,strpos($request->image_2,';')))[1])[1];
+                Image::make($request->image_2)->save(public_path('images/').$name2);
+                $msg .=  '2 image doen and';
+            }
 
-  
+            // $iname = 'image_'.$i;
+            // if($request->$iname){
+            //     $name = time().'.'. explode('/', explode(':',substr($request->$iname,0,strpos($request->$iname,';')))[1])[1];
+            //     Image::make($request->$iname)->save(public_path('images/').$name);
 
-        request()->image_1->move(public_path('images'), $imageName);
+            //     $images[] = $iname;
 
-        return $request->all();
+            // }
+           
+            Product::create([
+                'product_name' =>$validate['product_name'],
+                'description' =>$validate['description'], 
+                'catagory' =>$validate['catagory'], 
+                'price' =>$validate['price'], 
+                'quntity' =>$validate['quntity'], 
+                'image_1' =>$name1
+                
+            ]);
+
+            
+      
+
+        
+        
+        return ["success" =>$msg];
     }
 
     /**

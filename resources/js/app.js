@@ -53,7 +53,11 @@ const routes = [
         path: "/hiredproduct",
         component: require("./components/hiredproduct.vue").default
     },
-    { path: "/orders", component: require("./components/orders.vue").default }
+    { path: "/orders", component: require("./components/orders.vue").default },
+    {
+        path: "/Display/:Cid",
+        component: require("./components/DisplayProduct.vue").default
+    }
 ];
 
 const router = new VueRouter({
@@ -76,6 +80,9 @@ Vue.component(
     "example-component",
     require("./components/ExampleComponent.vue").default
 );
+Vue.component("navleft-component", require("./components/navbar.vue").default);
+
+Vue.component("checkout-component", require("./components/checkout.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
